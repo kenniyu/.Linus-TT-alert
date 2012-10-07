@@ -67,6 +67,8 @@
       // shit, i did. remember this fool so i can downvote him when he plays. ring the alarm
       myDownvoters[voterId] = voterName;
       audioEl.play();
+      console.log(voterName + ' downvoted me.');
+      $('.chatBar').find('input').val('*****' + voterName + ' downvoted *****').submit();
     }
   }
 
@@ -87,7 +89,6 @@
   // start listening
   turntable.addEventListener('message', function(m) {
     var command = m['command'];
-    console.log(m)
     if (command === 'pmmed') {
       handlePm(m);
     } else if (command === 'newsong') {
