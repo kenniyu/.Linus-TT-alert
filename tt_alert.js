@@ -22,13 +22,12 @@
 
   function handlePm(messageObj) {
     // when i get pmed, make sure its not pms. what?
-    var userId = messageObj['senderid'],
-        chatText,
-        audioEl;
-    if (userId === BOT_USER_ID) {
+    var senderId  = messageObj['senderid'],
+        audioEl   = document.getElementById('myPing'),
+        chatText;
+    if (senderId === BOT_USER_ID) {
       // he just alerted me, why?  might be my turn, play alert sound
       chatText = messageObj['text'];
-      audioEl = document.getElementById('myPing');
       audioEl.play();
     }
   }
@@ -37,7 +36,7 @@
     var currentDj = messageObj['room']['metadata']['current_dj'],
         audioEl,
         downvoterExists = myDownvoters[currentDj];
-    if (currentDj === '4e0646ef4fe7d05e0f00e44a') {
+    if (currentDj === MY_USER_ID) {
       // my turn to spin!
       audioEl = document.getElementById('djTime');
       audioEl.play();
@@ -55,17 +54,19 @@
         voterId   = voteLog[0],
         voteType  = voteLog[1],
         users     = roomObj['users'],
-        voterName = users[voterId]['name'];
+        voterName = users[voterId]['name'],
+        audioEl   = document.getElementById('fagAlert');
 
-    if (currentDj !== '4e0646ef4fe7d05e0f00e44a') {
+    if (currentDj !== MY_USER_ID) {
       // why would i care about the vote if im not djing? well i dont
       return;
     }
 
     // shit, im djing, did i get downvoted?
     if (voteType === 'down') {
-      // shit, i did. remember this fool so i can downvote him when he plays
+      // shit, i did. remember this fool so i can downvote him when he plays. ring the alarm
       myDownvoters[voterId] = voterName;
+      audioEl.play();
     }
   }
 
