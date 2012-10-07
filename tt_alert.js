@@ -85,7 +85,7 @@
 
   // start listening
   turntable.addEventListener('message', function(m) {
-    var command = m['command'],
+    var command = m['command'];
     console.log(m)
     if (command === 'pmmed') {
       handlePm(m);
