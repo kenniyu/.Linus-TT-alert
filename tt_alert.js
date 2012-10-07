@@ -68,7 +68,7 @@
       myDownvoters[voterId] = voterName;
       audioEl.play();
       console.log(voterName + ' downvoted me.');
-      $('.chatBar').find('input').val('*****' + voterName + ' downvoted *****').submit();
+      $('.chatBar').find('input').val(voterName + ' is a LAMEr').submit();
     }
   }
 
@@ -95,6 +95,8 @@
       handleNewSong(m);
     } else if (command === 'update_votes') {
       handleVotes(m);
+    } else {
+      console.log(m);
     }
   });
 
