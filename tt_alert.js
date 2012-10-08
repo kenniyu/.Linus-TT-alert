@@ -51,6 +51,7 @@ function handleNewSong(messageObj) {
 
 function handleVotes(messageObj) {
   // aint nobody gonna downvote me
+  console.log('handleVotes');
   var currentDj = roomObj['currentDj'],
       voteLog   = messageObj['room']['metadata']['votelog'][0],
       voterId   = voteLog[0],
@@ -58,6 +59,12 @@ function handleVotes(messageObj) {
       users     = roomObj['users'],
       voterName = users[voterId]['name'],
       audioEl   = document.getElementById('fagAlert');
+
+  console.log(currentDj);
+  console.log(MY_USER_ID);
+  console.log(voteLog);
+  console.log(voteType);
+  console.log(voterName);
 
   // shit, im djing, did i get downvoted?
   if (currentDj === MY_USER_ID && voteType === 'down') {
