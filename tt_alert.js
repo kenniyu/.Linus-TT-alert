@@ -70,8 +70,6 @@ function handleVotes(messageObj) {
 }
 
 function handleSnag(messageObj) {
-  console.log(messageObj);
-  console.log(MY_USER_ID);
   // this nigger stole something
   var currentDj   = roomObj['currentDj'],
       snaggerId   = messageObj['userid'],
@@ -79,8 +77,8 @@ function handleSnag(messageObj) {
       snaggerName = users[snaggerId]['name'],
       audioEl     = document.getElementById('myPing');
 
-      console.log(currentDj);
 
+      console.log(currentDj === MY_USER_ID);
   if (currentDj === MY_USER_ID) {
     // this fool snagged my bombass track
     audioEl.play();
