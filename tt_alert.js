@@ -70,12 +70,16 @@ function handleVotes(messageObj) {
 }
 
 function handleSnag(messageObj) {
+  console.log(messageObj);
+  console.log(MY_USER_ID);
   // this nigger stole something
   var currentDj   = messageObj['room']['metadata']['current_dj'],
       snaggerId   = messageObj['userid'],
       users       = roomObj['users'],
       snaggerName = users[snaggerId]['name'],
       audioEl     = document.getElementById('myPing');
+
+      console.log(currentDj);
 
   if (currentDj === MY_USER_ID) {
     // this fool snagged my bombass track
@@ -109,7 +113,6 @@ turntable.addEventListener('message', function(m) {
   } else if (command === 'update_votes') {
     handleVotes(m);
   } else if (command === 'snagged') {
-    console.log('snagged');
     handleSnag(m);
   } else {
     console.log(m);
