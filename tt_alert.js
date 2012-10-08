@@ -77,12 +77,10 @@ function handleSnag(messageObj) {
       snaggerName = users[snaggerId]['name'],
       audioEl     = document.getElementById('myPing');
 
-
-      console.log(currentDj === MY_USER_ID);
   if (currentDj === MY_USER_ID) {
     // this fool snagged my bombass track
     audioEl.play();
-    console.log(voterName + ' snagged me');
+    console.log(snaggerName + ' snagged me');
     $('.chatBar').find('input').val(snaggerName + ' loves this track').submit();
   }
 }
