@@ -35,7 +35,7 @@ function handlePm(messageObj) {
 }
 
 function handleNewSong(messageObj) {
-  var currentDj = messageObj['room']['metadata']['current_dj'],
+  var currentDj = roomObj['currentDj'],
       audioEl,
       downvoterExists = myDownvoters[currentDj];
   if (currentDj === MY_USER_ID) {
@@ -51,7 +51,7 @@ function handleNewSong(messageObj) {
 
 function handleVotes(messageObj) {
   // aint nobody gonna downvote me
-  var currentDj = messageObj['room']['metadata']['current_dj'],
+  var currentDj = roomObj['currentDj'],
       voteLog   = messageObj['room']['metadata']['votelog'][0],
       voterId   = voteLog[0],
       voteType  = voteLog[1],
@@ -73,7 +73,7 @@ function handleSnag(messageObj) {
   console.log(messageObj);
   console.log(MY_USER_ID);
   // this nigger stole something
-  var currentDj   = messageObj['room']['metadata']['current_dj'],
+  var currentDj   = roomObj['currentDj'],
       snaggerId   = messageObj['userid'],
       users       = roomObj['users'],
       snaggerName = users[snaggerId]['name'],
