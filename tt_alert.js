@@ -109,6 +109,7 @@ turntable.addEventListener('message', function(m) {
   } else if (command === 'update_votes') {
     handleVotes(m);
   } else if (command === 'snagged') {
+    console.log('snagged');
     handleSnag(m);
   } else {
     console.log(m);
