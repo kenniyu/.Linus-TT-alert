@@ -52,6 +52,10 @@ function handleNewSong(messageObj) {
 function handleVotes(messageObj) {
   // aint nobody gonna downvote me
   console.log('handleVotes');
+  console.log(roomObj);
+  console.log(messageObj);
+  console.log('===========');
+
   var currentDj = roomObj['currentDj'],
       voteLog   = messageObj['room']['metadata']['votelog'][0],
       voterId   = voteLog[0],
