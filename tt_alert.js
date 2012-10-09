@@ -28,9 +28,12 @@ function handlePm(messageObj) {
       audioEl   = document.getElementById('myPing'),
       chatText;
   if (senderId === BOT_USER_ID) {
-    // he just alerted me, why?  might be my turn, play alert sound
+    // he just pmed me
     chatText = messageObj['text'];
-    audioEl.play();
+    if (chatText === 'Hey! This spot is yours, so go ahead and step up!') {
+      // it's my turn, play alert sound
+      audioEl.play();
+    }
   }
 }
 
@@ -52,28 +55,22 @@ function handleNewSong(messageObj) {
 function handleVotes(messageObj) {
   // aint nobody gonna downvote me
   console.log('handleVotes');
-  console.log(roomObj);
-  console.log(messageObj);
-  console.log('===========');
-
   var currentDj = roomObj['currentDj'],
-      voteLog   = messageObj['room']['metadata']['votelog'][0],
-      voterId   = voteLog[0],
-      voteType  = voteLog[1],
       users     = roomObj['users'],
-      voterName = users[voterId]['name'],
-      audioEl   = document.getElementById('fagAlert');
-
-  console.log(currentDj);
-  console.log(MY_USER_ID);
-  console.log(voteLog);
-  console.log(voteType);
-  console.log(voterName);
+      voteLog   = messageObj['room']['metadata']['votelog'][0],
+      voteType  = voteLog[1],
+      voterId,
+      voterName,
+      audioEl;
 
   // shit, im djing, did i get downvoted?
   if (currentDj === MY_USER_ID && voteType === 'down') {
     // shit, i did. remember this fool so i can downvote him when he plays. ring the alarm
+    voterId               = voteLog[0];
+    voterName             = users[voterId]['name'];
     myDownvoters[voterId] = voterName;
+    audioEl               = document.getElementById('fagAlert');
+
     audioEl.play();
     console.log(voterName + ' downvoted me');
     $('.chatBar').find('input').val(voterName + ' is a LAMEr').submit();
@@ -93,6 +90,19 @@ function handleSnag(messageObj) {
     audioEl.play();
     console.log(snaggerName + ' snagged me');
     $('.chatBar').find('input').val(snaggerName + ' loves this track').submit();
+  }
+}
+
+function handleRemoveDj(messageObj) {
+  var userObj = messageObj['user'],
+      userId  = userObj['userid'],
+      audioEl;
+
+  if (userId === MY_USER_ID) {
+    // i just got removed, type q+
+    $('.pmInput').find('input').val('q+').submit();
+    audioEl = document.getElementById('djTime');
+    audioEl.play();
   }
 }
 
@@ -121,6 +131,8 @@ turntable.addEventListener('message', function(m) {
     handleVotes(m);
   } else if (command === 'snagged') {
     handleSnag(m);
+  } else if (command === 'rem_dj') {
+    handleRemoveDj(m);
   } else {
     console.log(m);
   }
