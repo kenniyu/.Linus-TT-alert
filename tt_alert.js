@@ -1,11 +1,23 @@
 // vars
-var $body         = $('body'),
-    $audioDiv     = $('<audio id="myPing" src="http://jjc.changsclan.net/ken/tri-tone.mp3" preload="auto"></audio><audio id="djTime" src="http://jjc.changsclan.net/ken/mail_mother-fuka-ringtone.mp3" preload="auto"></audio><audio id="fagAlert" src="http://jjc.changsclan.net/ken/shittyshittyfagfag.wav" preload="auto"></audio>'),
-    msgCount      = 1,
-    myDownvoters  = { '4fb64f2feb35c12131000048': 'p014k' },
-    MY_USER_ID    = '4e0646ef4fe7d05e0f00e44a',
-    BOT_USER_ID   = '4faf2ceceb35c11f31000439',
-    BOT_NAME      = '.Linus';
+var $body                   = $('body'),
+    $audioDiv               = $('<audio id="myPing" src="http://jjc.changsclan.net/ken/tri-tone.mp3" preload="auto"></audio><audio id="djTime" src="http://jjc.changsclan.net/ken/mail_mother-fuka-ringtone.mp3" preload="auto"></audio><audio id="fagAlert" src="http://jjc.changsclan.net/ken/shittyshittyfagfag.wav" preload="auto"></audio><audio id="vote-streak" src="http://jjc.changsclan.net/ken/jabys/killingspree.wav" preload="auto"></audio>'),
+    msgCount                = 1,
+    upvoteStreak            = 0,
+    upvoteStreakAudioHash   = {
+      3: 'killingspree.wav',
+      4: 'dominating.wav',
+      5: 'megakill.wav',
+      6: 'unstoppable.wav',
+      7: 'wicketsick.wav',
+      8: 'monsterkill.wav',
+      9: 'godlike.wav',
+      10: 'holyshit.wav'
+    },
+    myDownvoters            = { '4fb64f2feb35c12131000048': 'p014k' },
+    UPVOTE_AUDIO_SRC_PREFIX = 'http://jjc.changsclan.net/ken/jabys/',
+    MY_USER_ID              = '4e0646ef4fe7d05e0f00e44a',
+    BOT_USER_ID             = '4faf2ceceb35c11f31000439',
+    BOT_NAME                = '.Linus';
 
 // functions
 
@@ -43,6 +55,7 @@ function handleNewSong(messageObj) {
       downvoterExists = myDownvoters[currentDj];
   if (currentDj === MY_USER_ID) {
     // my turn to spin!
+    upvoteStreak = 0;
     audioEl = document.getElementById('djTime');
     audioEl.play();
   } else if (downvoterExists) {
@@ -54,7 +67,6 @@ function handleNewSong(messageObj) {
 
 function handleVotes(messageObj) {
   // aint nobody gonna downvote me
-  console.log('handleVotes');
   var currentDj = roomObj['currentDj'],
       users     = roomObj['users'],
       voteLog   = messageObj['room']['metadata']['votelog'][0],
@@ -63,22 +75,30 @@ function handleVotes(messageObj) {
       voterName,
       audioEl;
 
-      console.log(roomObj['currentDj']);
-      console.log(roomObj['users']);
+  // shit, im djing, did i get downvoted?
+  if (currentDj === MY_USER_ID) {
+    if (voteType === 'down') {
+      console.log('AHHH I GOT DOWNVOTED. messageObj = ');
+      console.log(messageObj);
+      console.log('votelog = ');
       console.log(voteLog);
 
+      voterId               = voteLog[0];
+      voterName             = users[voterId]['name'];
+      myDownvoters[voterId] = voterName;
+      audioEl               = document.getElementById('fagAlert');
 
-  // shit, im djing, did i get downvoted?
-  if (currentDj === MY_USER_ID && voteType === 'down') {
-    // shit, i did. remember this fool so i can downvote him when he plays. ring the alarm
-    voterId               = voteLog[0];
-    voterName             = users[voterId]['name'];
-    myDownvoters[voterId] = voterName;
-    audioEl               = document.getElementById('fagAlert');
-
-    audioEl.play();
-    console.log(voterName + ' downvoted me');
-    $('.chatBar').find('input').val(voterName + ' is a LAMEr').submit();
+      audioEl.play();
+      console.log(voterName + ' downvoted me');
+      $('.chatBar').find('input').val(voterName + ' is a LAMEr').submit();
+    } else {
+      upvoteStreak += 1;
+      audioEl = document.getElementById('vote-streak');
+      if (upvoteStreak >= 3) {
+        audioEl.src     = UPVOTE_AUDIO_SRC_PREFIX + upvoteStreakAudioHash[ Math.min(10, upvoteStreak) ];
+        audioEl.play();
+      }
+    }
   }
 }
 
