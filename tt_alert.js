@@ -111,7 +111,10 @@ function handleVotes(messageObj) {
         audioEl.play();
       }
     }
+  } else if ( myDownvoters[currentDj] === undefined ) {
+    // not a downvoter, just upvote
   }
+
 }
 
 function handleSnag(messageObj) {
@@ -154,6 +157,7 @@ $('#privateChatIcon').click();
 $('#buddyList .user').each(function(index, item) {
   if ($(item).find('.name').text() === BOT_NAME) {
     $(item).click();
+    $('.pmInput').find('input').val('q+').submit();
   }
 });
 
