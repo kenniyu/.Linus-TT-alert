@@ -98,6 +98,8 @@ function handleRemoveDj(messageObj) {
       userId  = userObj['userid'],
       audioEl;
 
+      console.log(userId + ' ' + MY_USER_ID);
+
   if (userId === MY_USER_ID) {
     // i just got removed, type q+
     $('.pmInput').find('input').val('q+').submit();
@@ -132,6 +134,7 @@ turntable.addEventListener('message', function(m) {
   } else if (command === 'snagged') {
     handleSnag(m);
   } else if (command === 'rem_dj') {
+    console.log('handle remove dj');
     handleRemoveDj(m);
   } else {
     console.log(m);
