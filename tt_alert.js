@@ -94,6 +94,7 @@ function handleSnag(messageObj) {
 }
 
 function handleRemoveDj(messageObj) {
+  console.log(messageObj);
   var userObj = messageObj['user'],
       userId  = userObj['userid'],
       audioEl;
