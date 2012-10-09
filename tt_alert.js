@@ -63,6 +63,11 @@ function handleVotes(messageObj) {
       voterName,
       audioEl;
 
+      console.log(roomObj['currentDj']);
+      console.log(roomObj['users']);
+      console.log(voteLog);
+
+
   // shit, im djing, did i get downvoted?
   if (currentDj === MY_USER_ID && voteType === 'down') {
     // shit, i did. remember this fool so i can downvote him when he plays. ring the alarm
@@ -94,14 +99,9 @@ function handleSnag(messageObj) {
 }
 
 function handleRemoveDj(messageObj) {
-  console.log(messageObj);
   var userObj = messageObj['user'],
       userId  = userObj[0]['userid'],
       audioEl;
-
-      console.log(userObj);
-      console.log(userObj[0]);
-      console.log(userId + ' ' + MY_USER_ID);
 
   if (userId === MY_USER_ID) {
     // i just got removed, type q+
