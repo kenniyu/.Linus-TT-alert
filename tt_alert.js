@@ -99,6 +99,8 @@ function handleRemoveDj(messageObj) {
       userId  = userObj[0]['userid'],
       audioEl;
 
+      console.log(userObj);
+      console.log(userObj[0]);
       console.log(userId + ' ' + MY_USER_ID);
 
   if (userId === MY_USER_ID) {
