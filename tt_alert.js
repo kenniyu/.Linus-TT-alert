@@ -1,19 +1,32 @@
 // vars
 var $body                   = $('body'),
-    $audioDiv               = $('<audio id="myPing" src="http://jjc.changsclan.net/ken/tri-tone.mp3" preload="auto"></audio><audio id="djTime" src="http://jjc.changsclan.net/ken/mail_mother-fuka-ringtone.mp3" preload="auto"></audio><audio id="fagAlert" src="http://jjc.changsclan.net/ken/shittyshittyfagfag.wav" preload="auto"></audio><audio id="vote-streak" src="http://jjc.changsclan.net/ken/jabys/killingspree.wav" preload="auto"></audio>'),
+    $audioDiv               = $('<audio id="my-ping" src="http://jjc.changsclan.net/ken/tri-tone.mp3" preload="auto"></audio>'+
+                                '<audio id="dj-time" src="http://jjc.changsclan.net/ken/mail_mother-fuka-ringtone.mp3" preload="auto"></audio>'+
+                                '<audio id="fag-alert" src="http://jjc.changsclan.net/ken/shittyshittyfagfag.wav" preload="auto"></audio>'+
+                                '<audio id="killing-spree" src="http://jjc.changsclan.net/ken/jabys/killingspree.wav" preload="auto"></audio>'+
+                                '<audio id="dominating" src="http://jjc.changsclan.net/ken/jabys/dominating.wav" preload="auto"></audio>'+
+                                '<audio id="megakill" src="http://jjc.changsclan.net/ken/jabys/megakill.wav" preload="auto"></audio>'+
+                                '<audio id="unstoppable" src="http://jjc.changsclan.net/ken/jabys/unstoppable.wav" preload="auto"></audio>'+
+                                '<audio id="wickedsick" src="http://jjc.changsclan.net/ken/jabys/wickedsick.wav" preload="auto"></audio>'+
+                                '<audio id="monsterkill" src="http://jjc.changsclan.net/ken/jabys/monsterkill.wav" preload="auto"></audio>'+
+                                '<audio id="godlike" src="http://jjc.changsclan.net/ken/jabys/godlike.wav" preload="auto"></audio>'+
+                                '<audio id="holyshit" src="http://jjc.changsclan.net/ken/jabys/holyshit.wav" preload="auto"></audio>'),
     msgCount                = 1,
     upvoteStreak            = 0,
     upvoteStreakAudioHash   = {
-      3: 'killingspree.wav',
-      4: 'dominating.wav',
-      5: 'megakill.wav',
-      6: 'unstoppable.wav',
-      7: 'wicketsick.wav',
-      8: 'monsterkill.wav',
-      9: 'godlike.wav',
-      10: 'holyshit.wav'
+      3: 'killingspree',
+      4: 'dominating',
+      5: 'megakill',
+      6: 'unstoppable',
+      7: 'wicketsick',
+      8: 'monsterkill',
+      9: 'godlike',
+      10: 'holyshit'
     },
-    myDownvoters            = { '4fb64f2feb35c12131000048': 'p014k' },
+    myDownvoters            = {
+      '4fb64f2feb35c12131000048': 'p014k',
+      '4e7279c44fe7d045be1c45b5': 'Theod Huxtable'
+    },
     UPVOTE_AUDIO_SRC_PREFIX = 'http://jjc.changsclan.net/ken/jabys/',
     MY_USER_ID              = '4e0646ef4fe7d05e0f00e44a',
     BOT_USER_ID             = '4faf2ceceb35c11f31000439',
@@ -93,9 +106,8 @@ function handleVotes(messageObj) {
       $('.chatBar').find('input').val(voterName + ' is a LAMEr').submit();
     } else {
       upvoteStreak += 1;
-      audioEl = document.getElementById('vote-streak');
       if (upvoteStreak >= 3) {
-        audioEl.src     = UPVOTE_AUDIO_SRC_PREFIX + upvoteStreakAudioHash[ Math.min(10, upvoteStreak) ];
+        audioEl = document.getElementById( upvoteStreakAudioHash[ Math.min(10, upvoteStreak) ] );
         audioEl.play();
       }
     }
