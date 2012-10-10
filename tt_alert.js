@@ -3,7 +3,7 @@ var $body                   = $('body'),
     $audioDiv               = $('<audio id="my-ping" src="http://jjc.changsclan.net/ken/tri-tone.mp3" preload="auto"></audio>'+
                                 '<audio id="dj-time" src="http://jjc.changsclan.net/ken/mail_mother-fuka-ringtone.mp3" preload="auto"></audio>'+
                                 '<audio id="fag-alert" src="http://jjc.changsclan.net/ken/shittyshittyfagfag.wav" preload="auto"></audio>'+
-                                '<audio id="killing-spree" src="http://jjc.changsclan.net/ken/jabys/killingspree.wav" preload="auto"></audio>'+
+                                '<audio id="killingspree" src="http://jjc.changsclan.net/ken/jabys/killingspree.wav" preload="auto"></audio>'+
                                 '<audio id="dominating" src="http://jjc.changsclan.net/ken/jabys/dominating.wav" preload="auto"></audio>'+
                                 '<audio id="megakill" src="http://jjc.changsclan.net/ken/jabys/megakill.wav" preload="auto"></audio>'+
                                 '<audio id="unstoppable" src="http://jjc.changsclan.net/ken/jabys/unstoppable.wav" preload="auto"></audio>'+
@@ -18,7 +18,7 @@ var $body                   = $('body'),
       4: 'dominating',
       5: 'megakill',
       6: 'unstoppable',
-      7: 'wicketsick',
+      7: 'wickedsick',
       8: 'monsterkill',
       9: 'godlike',
       10: 'holyshit'
@@ -27,6 +27,7 @@ var $body                   = $('body'),
       '4fb64f2feb35c12131000048': 'p014k',
       '4e7279c44fe7d045be1c45b5': 'Theod Huxtable'
     },
+    upvoteTimerInterval,
     UPVOTE_AUDIO_SRC_PREFIX = 'http://jjc.changsclan.net/ken/jabys/',
     MY_USER_ID              = '4e0646ef4fe7d05e0f00e44a',
     BOT_USER_ID             = '4faf2ceceb35c11f31000439',
@@ -50,7 +51,7 @@ function initRoomObj() {
 function handlePm(messageObj) {
   // when i get pmed, make sure its not pms. what?
   var senderId  = messageObj['senderid'],
-      audioEl   = document.getElementById('myPing'),
+      audioEl   = document.getElementById('my-ping'),
       chatText;
   if (senderId === BOT_USER_ID) {
     // he just pmed me
@@ -69,11 +70,11 @@ function handleNewSong(messageObj) {
   if (currentDj === MY_USER_ID) {
     // my turn to spin!
     upvoteStreak = 0;
-    audioEl = document.getElementById('djTime');
+    audioEl = document.getElementById('dj-time');
     audioEl.play();
   } else if (downvoterExists) {
     // someone who downvoted me is playing, downvote his ass LOL!
-    audioEl = document.getElementById('fagAlert');
+    audioEl = document.getElementById('fag-alert');
     audioEl.play();
   }
 }
@@ -91,6 +92,7 @@ function handleVotes(messageObj) {
   // shit, im djing, did i get downvoted?
   if (currentDj === MY_USER_ID) {
     if (voteType === 'down') {
+      upvoteStreak = 0;
       console.log('AHHH I GOT DOWNVOTED. messageObj = ');
       console.log(messageObj);
       console.log('votelog = ');
@@ -99,7 +101,7 @@ function handleVotes(messageObj) {
       voterId               = voteLog[0];
       voterName             = users[voterId]['name'];
       myDownvoters[voterId] = voterName;
-      audioEl               = document.getElementById('fagAlert');
+      audioEl               = document.getElementById('fag-alert');
 
       audioEl.play();
       console.log(voterName + ' downvoted me');
@@ -123,7 +125,7 @@ function handleSnag(messageObj) {
       snaggerId   = messageObj['userid'],
       users       = roomObj['users'],
       snaggerName = users[snaggerId]['name'],
-      audioEl     = document.getElementById('myPing');
+      audioEl     = document.getElementById('my-ping');
 
   if (currentDj === MY_USER_ID) {
     // this fool snagged my bombass track
@@ -141,9 +143,13 @@ function handleRemoveDj(messageObj) {
   if (userId === MY_USER_ID) {
     // i just got removed, type q+
     $('.pmInput').find('input').val('q+').submit();
-    audioEl = document.getElementById('djTime');
+    audioEl = document.getElementById('dj-time');
     audioEl.play();
   }
+}
+
+function sendPm(msg) {
+  $('.pmContainer:first').find('input').val(msg).submit();
 }
 
 // ============================================== actions ============================================== //
@@ -157,7 +163,7 @@ $('#privateChatIcon').click();
 $('#buddyList .user').each(function(index, item) {
   if ($(item).find('.name').text() === BOT_NAME) {
     $(item).click();
-    $('.pmInput').find('input').val('q+').submit();
+    sendPm('q+');
   }
 });
 
@@ -182,6 +188,6 @@ turntable.addEventListener('message', function(m) {
 
 // start auto prevent afk
 setInterval(function() {
-  $('.pmInput').find('input').val('hi'+msgCount).submit();
+  sendPm('hi'+msgCount);
   msgCount += 1;
 }, 180000);
